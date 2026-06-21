@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hackbox Custom Web Flasher</title>
+    <!-- Import Outfit and JetBrains Mono Fonts from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- ESP Web Tools component -->
+    <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
+</head>
+<body>
+    <div class="background-glow"></div>
+    
+    <div class="container">
+        <header>
+            <div class="logo">⚡ HACKBOX WIRELESS AUDITING MATRIX</div>
+            <h1>Hackbox Web Flasher</h1>
+            <p class="subtitle">Quickly program RF-Clown, nRFBox, nyanBOX, BWifiKill, and Hackbox CK42X firmware to your ESP32-based multi-tool directly from the browser.</p>
+        </header>
+
+        <main>
+            <!-- Step 1: Select Firmware -->
+            <section class="selection-section">
+                <h2>1. Select Auditing Firmware</h2>
+                <div class="firmware-grid">
+                    
+                    <!-- Card 1: RF-Clown -->
+                    <div class="firmware-card" data-fw="rf-clown">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <span class="badge badge-clown">RF-Clown</span>
+                            <h3>RF-Clown (v2.0.0)</h3>
+                            <p class="description">Sub-GHz RF transceiver tool. Utilizes the CC1101 module for scanning, playing, and analyzing RF signals.</p>
+                            <div class="specs">
+                                <span>📁 Size: 681 KB (Merged)</span>
+                                <span>🔧 Chip: ESP32</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: nRFBox -->
+                    <div class="firmware-card" data-fw="nrfbox">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <span class="badge badge-nrf">nRFBox</span>
+                            <h3>nRFBox (v2.7.2)</h3>
+                            <p class="description">2.4GHz transceiver suite. Focuses on NRF24L01+ signal sniffing, jamming, and packet testing.</p>
+                            <div class="specs">
+                                <span>📁 Size: 1.69 MB (Merged)</span>
+                                <span>🔧 Chip: ESP32</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: nyanBOX -->
+                    <div class="firmware-card" data-fw="nyanbox">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <span class="badge badge-nyanbox">nyanBOX</span>
+                            <h3>nyanBOX Multi-Tool</h3>
+                            <p class="description">Dynamic multi-tool firmware. Connects to Nyandevices manifest at runtime for auto-updating latest release.</p>
+                            <div class="specs">
+                                <span>📁 Size: Dynamic / 1.91 MB</span>
+                                <span>🔧 Update: Automatic (CORS-fetch)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: BWifiKill -->
+                    <div class="firmware-card" data-fw="bwifikill">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <span class="badge badge-bwifi">BWifiKill</span>
+                            <h3>BWifiKill-ESP32</h3>
+                            <p class="description">WiFi security testing tool. Fetches the latest compilation from GitHub Releases dynamically at runtime.</p>
+                            <div class="specs">
+                                <span>📁 Size: Dynamic / 1.95 MB</span>
+                                <span>🔧 Update: Automatic (GitHub API)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 5: Hackbox CK42X -->
+                    <div class="firmware-card" data-fw="hackbox-ck42x">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <span class="badge badge-hackbox">Hackbox CK42X</span>
+                            <h3>Hackbox CK42X</h3>
+                            <p class="description">Custom security suite built for lordbuffcloud's hackbox. Includes precompiled merged binary.</p>
+                            <div class="specs">
+                                <span>📁 Size: 2.31 MB (Merged)</span>
+                                <span>🔧 Chip: ESP32</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 6: Nyanbee Redirect -->
+                    <div class="firmware-card redirect-card">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <span class="badge badge-nyanbee">Nyanbee</span>
+                            <h3>Nyanbee Stock</h3>
+                            <p class="description">Redirects to the official Nyanbee stock web flashing page to burn nyanbee firmware safely.</p>
+                            <div class="redirect-card-footer">
+                                <a href="https://www.ck42x.com/nyanbee/flash-stock" target="_blank" class="small-redirect-btn">
+                                    Open Nyanbee Flasher ↗
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Step 2: Connect & Flash -->
+            <section class="flash-section">
+                <h2>2. Program Device</h2>
+                <div class="flash-card glass">
+                    <div id="selection-placeholder" class="placeholder-text">
+                        <p>Please select a firmware card above to initialize the programmer.</p>
+                    </div>
+                    <div id="flasher-controls" class="hidden">
+                        <div class="selected-info">
+                            <p>Ready to flash: <strong id="selected-fw-title">-</strong></p>
+                            <p class="update-status" id="selected-fw-status"></p>
+                            <p class="file-info">Binary Reference: <code id="selected-fw-path">-</code></p>
+                        </div>
+                        <div class="button-container">
+                            <esp-web-install-button id="install-button">
+                                <button slot="activate" class="custom-flash-btn">Install Firmware</button>
+                                <span slot="unsupported">Web Serial is unsupported by this browser. Please use Chrome, Edge, or Opera.</span>
+                            </esp-web-install-button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Hardware/Pinout Config Section -->
+            <section class="info-section glass">
+                <h2>📌 PINOUT & MODULE SCHEMATICS</h2>
+                <div class="info-grid">
+                    <div>
+                        <h3>Radio / RF Modules</h3>
+                        <ul>
+                            <li><strong>CC1101 GDO0 (TX)</strong>: GPIO 27</li>
+                            <li><strong>CC1101 GDO2 (RX)</strong>: GPIO 27 (Shared/Custom)</li>
+                            <li><strong>NRF24L01+ CE</strong>: GPIO 16</li>
+                            <li><strong>NRF24L01+ CSN</strong>: GPIO 4</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>GPS & Interfaces</h3>
+                        <ul>
+                            <li><strong>GPS TX</strong>: GPIO 22</li>
+                            <li><strong>GPS RX</strong>: GPIO 21</li>
+                            <li><strong>PN532 NFC SS</strong>: GPIO 17</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>HACKBOX Suite • Configured for ESP32 Multi-Tool Kit</p>
+            <p class="footer-links">
+                <a href="https://github.com/REDIHAT/hackbox" target="_blank">View Hackbox Repository</a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- JavaScript logic to handle Manifest generation, caching, and auto-updates -->
+    <script>
+        const cards = document.querySelectorAll('.firmware-card:not(.redirect-card)');
+        const placeholder = document.getElementById('selection-placeholder');
+        const controls = document.getElementById('flasher-controls');
+        const selectedTitle = document.getElementById('selected-fw-title');
+        const selectedStatus = document.getElementById('selected-fw-status');
+        const selectedPath = document.getElementById('selected-fw-path');
+        const installBtn = document.getElementById('install-button');
+
+        // Initial definitions
+        const firmwareData = {
+            'rf-clown': {
+                name: "RF-Clown (v2.0.0)",
+                title: "RF-Clown Sub-GHz Tool",
+                path: "firmware/RFclown_v2.0.0_MERGED.bin",
+                type: "static"
+            },
+            'nrfbox': {
+                name: "nRFBox (v2.7.2)",
+                title: "nRFBox 2.4GHz Tool",
+                path: "firmware/NRFBox_v2.7.2_MERGED.bin",
+                type: "static"
+            },
+            'hackbox-ck42x': {
+                name: "Hackbox CK42X",
+                title: "Hackbox CK42X Main Firmware",
+                path: "firmware/hackbox-main-merged.bin",
+                type: "static"
+            },
+            'nyanbox': {
+                name: "nyanBOX Multi-Tool",
+                title: "nyanBOX Multi-Tool (Latest Release)",
+                path: "firmware/NYANBOX_v4.40.17-MERGED.bin",
+                type: "nyanbox"
+            },
+            'bwifikill': {
+                name: "BWifiKill-ESP32",
+                title: "BWifiKill-ESP32 (Latest Release)",
+                path: "firmware/Bwifikill_MERGED.bin",
+                type: "bwifikill"
+            }
+        };
+
+        let activeBlobUrl = null;
+
+        function setInstallManifest(name, parts) {
+            const manifest = {
+                name: name,
+                version: "1.0.0",
+                new_install_prompt_erase: true,
+                builds: [
+                    {
+                        chipFamily: "ESP32",
+                        parts: parts
+                    }
+                ]
+            };
+
+            if (activeBlobUrl) {
+                URL.revokeObjectURL(activeBlobUrl);
+            }
+
+            const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+            activeBlobUrl = URL.createObjectURL(blob);
+            installBtn.setAttribute('manifest', activeBlobUrl);
+        }
+
+        cards.forEach(card => {
+            card.addEventListener('click', async () => {
+                cards.forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+
+                const key = card.dataset.fw;
+                const fw = firmwareData[key];
+                if (!fw) return;
+
+                // Reset statuses
+                selectedTitle.textContent = fw.title;
+                selectedPath.textContent = fw.path;
+                selectedStatus.className = "update-status";
+                selectedStatus.textContent = "";
+
+                placeholder.classList.add('hidden');
+                controls.classList.remove('hidden');
+
+                if (fw.type === "static") {
+                    setInstallManifest(fw.name, [{ path: fw.path, offset: 0 }]);
+                } 
+                else if (fw.type === "nyanbox") {
+                    selectedStatus.className = "update-status status-fetching";
+                    selectedStatus.textContent = "Checking for latest nyanBOX releases...";
+                    
+                    try {
+                        // Attempt to fetch manifest from official source via CORS proxy
+                        const proxyUrl = "https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=60&url=";
+                        const targetUrl = encodeURIComponent("https://nyandevices.com/flasher/manifest.php");
+                        const res = await fetch(proxyUrl + targetUrl);
+                        if (!res.ok) throw new Error("CORS Proxy request failed");
+                        
+                        const data = await res.json();
+                        // Search for the ESP32 build inside the manifest
+                        const esp32Build = data.builds.find(b => b.chipFamily === "ESP32");
+                        if (esp32Build && esp32Build.parts) {
+                            // Map parts to absolute paths using nyandevices domain if relative
+                            const mappedParts = esp32Build.parts.map(part => {
+                                let path = part.path;
+                                if (!path.startsWith('http')) {
+                                    path = "https://nyandevices.com/flasher/" + path;
+                                }
+                                return { path: path, offset: part.offset };
+                            });
+
+                            setInstallManifest(fw.name, mappedParts);
+                            selectedStatus.className = "update-status status-updated";
+                            selectedStatus.textContent = "Successfully loaded latest dynamic build from nyandevices.com!";
+                        } else {
+                            throw new Error("ESP32 build configuration not found in manifest");
+                        }
+                    } catch (e) {
+                        console.warn("nyanBOX live update fetch failed, using local fallback. Error:", e);
+                        setInstallManifest(fw.name, [{ path: fw.path, offset: 0 }]);
+                        selectedStatus.className = "update-status status-fallback";
+                        selectedStatus.textContent = "Offline or update failed. Loaded precompiled local fallback (v4.40.17).";
+                    }
+                } 
+                else if (fw.type === "bwifikill") {
+                    selectedStatus.className = "update-status status-fetching";
+                    selectedStatus.textContent = "Checking GitHub for latest BWifiKill build...";
+                    
+                    try {
+                        const res = await fetch("https://api.github.com/repos/pepeangell5/BWifiKill-ESP32-V4.0/releases/latest");
+                        if (!res.ok) throw new Error("GitHub Releases API request failed");
+                        
+                        const data = await res.json();
+                        // Look for a .bin asset in the release
+                        const binAsset = data.assets.find(asset => asset.name.endsWith('.bin'));
+                        if (binAsset && binAsset.browser_download_url) {
+                            setInstallManifest(fw.name, [{ path: binAsset.browser_download_url, offset: 0 }]);
+                            selectedStatus.className = "update-status status-updated";
+                            selectedStatus.textContent = `Loaded latest release (${data.tag_name}) from GitHub!`;
+                        } else {
+                            throw new Error("No .bin asset found in the latest release");
+                        }
+                    } catch (e) {
+                        console.warn("BWifiKill live update fetch failed, using local fallback. Error:", e);
+                        setInstallManifest(fw.name, [{ path: fw.path, offset: 0 }]);
+                        selectedStatus.className = "update-status status-fallback";
+                        selectedStatus.textContent = "Failed to fetch GitHub update. Loaded precompiled local fallback.";
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
