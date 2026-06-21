@@ -70,7 +70,7 @@ $bootloader = Join-Path $tempDir "bootloader.bin"
 $partitions = Join-Path $tempDir "partitions.bin"
 $firmware = Join-Path $tempDir "firmware.bin"
 
-$command = "esptool.py --chip esp32 --port $comPort --baud 921600 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size detect 0x1000 `"$bootloader`" 0x8000 `"$partitions`" 0x10000 `"$firmware`""
+$command = "esptool.py --chip esp32 --port $comPort --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size detect 0x1000 `"$bootloader`" 0x8000 `"$partitions`" 0x10000 `"$firmware`""
 
 Write-Host "Executing command: $command" -ForegroundColor Cyan
 Invoke-Expression $command
