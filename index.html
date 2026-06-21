@@ -180,6 +180,19 @@
 
     <!-- JavaScript logic to handle Manifest generation, caching, and auto-updates -->
     <script>
+        // Check for file protocol (running index.html directly from local explorer)
+        if (window.location.protocol === 'file:') {
+            const container = document.querySelector('.container');
+            const warningBanner = document.createElement('div');
+            warningBanner.className = 'warning-banner';
+            warningBanner.innerHTML = `
+                <strong>⚠️ Running Locally via File Protocol Detected</strong><br>
+                Browser security policies block flashing firmware files when opened directly as a local file (file://).<br>
+                Please use the live site: <a href="https://REDIHAT.github.io/hackbox/" target="_blank" style="color: #ff0000; font-weight: 700; text-decoration: underline;">https://REDIHAT.github.io/hackbox/</a> or host it on a local web server (e.g. <code>python -m http.server 8000</code>).
+            `;
+            container.insertBefore(warningBanner, container.firstChild);
+        }
+
         const cards = document.querySelectorAll('.firmware-card:not(.redirect-card)');
         const placeholder = document.getElementById('selection-placeholder');
         const controls = document.getElementById('flasher-controls');
@@ -228,9 +241,9 @@
             },
             'bwifikill': {
                 name: "BWifiKill-ESP32",
-                title: "BWifiKill-ESP32 (Latest Release)",
+                title: "BWifiKill-ESP32 (Auto-synced)",
                 path: "firmware/Bwifikill_MERGED.bin",
-                type: "bwifikill"
+                type: "static"
             }
         };
 
@@ -291,31 +304,6 @@
 
                 if (fw.type === "static") {
                     setInstallManifest(fw.name, [{ path: fw.path, offset: 0 }]);
-                } 
-                else if (fw.type === "bwifikill") {
-                    selectedStatus.className = "update-status status-fetching";
-                    selectedStatus.textContent = "Checking GitHub for latest BWifiKill build...";
-                    
-                    try {
-                        const res = await fetch("https://api.github.com/repos/pepeangell5/BWifiKill-ESP32-V4.0/releases/latest");
-                        if (!res.ok) throw new Error("GitHub Releases API request failed");
-                        
-                        const data = await res.json();
-                        // Look for a .bin asset in the release
-                        const binAsset = data.assets.find(asset => asset.name.endsWith('.bin'));
-                        if (binAsset && binAsset.browser_download_url) {
-                            setInstallManifest(fw.name, [{ path: binAsset.browser_download_url, offset: 0 }]);
-                            selectedStatus.className = "update-status status-updated";
-                            selectedStatus.textContent = `Loaded latest release (${data.tag_name}) from GitHub!`;
-                        } else {
-                            throw new Error("No .bin asset found in the latest release");
-                        }
-                    } catch (e) {
-                        console.warn("BWifiKill live update fetch failed, using local fallback. Error:", e);
-                        setInstallManifest(fw.name, [{ path: fw.path, offset: 0 }]);
-                        selectedStatus.className = "update-status status-fallback";
-                        selectedStatus.textContent = "Failed to fetch GitHub update. Loaded precompiled local fallback.";
-                    }
                 }
             });
         });
