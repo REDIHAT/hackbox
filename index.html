@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
     <!-- Cache buster updated to force reload of CSS changes -->
-    <link rel="stylesheet" href="style.css?v=2.0.3">
+    <link rel="stylesheet" href="style.css?v=2.0.4">
     <!-- ESP Web Tools component -->
     <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
 </head>
@@ -58,21 +58,59 @@
                         </div>
                     </div>
 
-                    <!-- Card 3: nyanBOX -->
-                    <div class="firmware-card" data-fw="nyanbox">
+                    <!-- Card 3a: nyanBOX DIO -->
+                    <div class="firmware-card" data-fw="nyanbox-dio">
                         <div class="card-glow"></div>
                         <div class="card-content">
-                            <span class="badge badge-nyanbox">nyanBOX</span>
-                            <h3>nyanBOX Multi-Tool</h3>
-                            <p class="description">Fetches bootloader, partition table, and firmware dynamically from the official GitHub repository at flash-time to ensure you always get the latest update.</p>
+                            <span class="badge badge-nyanbox">nyanBOX DIO</span>
+                            <h3>nyanBOX (DIO Mode)</h3>
+                            <p class="description">Standard flash mode. Auto-synced and merged from the official repository every 6 hours.</p>
                             <div class="redirect-card-footer" style="padding-top: 0.5rem;">
                                 <a href="https://drive.google.com/drive/u/0/folders/1iStPBdfweuI77CcMu3Bus1OL7F0l-HkU" target="_blank" class="small-redirect-btn" onclick="event.stopPropagation();">
                                     Custom Drive ↗
                                 </a>
                             </div>
                             <div class="specs">
-                                <span>📁 Size: Dynamic (3-Part)</span>
-                                <span>🔧 Type: Bootloader + Partition + App</span>
+                                <span>📁 Size: ~1.9 MB (Merged)</span>
+                                <span>🔧 Mode: DIO / 40MHz</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3b: nyanBOX DOUT -->
+                    <div class="firmware-card" data-fw="nyanbox-dout">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <span class="badge badge-nyanbox">nyanBOX DOUT</span>
+                            <h3>nyanBOX (DOUT Mode)</h3>
+                            <p class="description">Safe flash mode. Use this if your board experiences bootloops or CPU reset crashes in other modes.</p>
+                            <div class="redirect-card-footer" style="padding-top: 0.5rem;">
+                                <a href="https://drive.google.com/drive/u/0/folders/1iStPBdfweuI77CcMu3Bus1OL7F0l-HkU" target="_blank" class="small-redirect-btn" onclick="event.stopPropagation();">
+                                    Custom Drive ↗
+                                </a>
+                            </div>
+                            <div class="specs">
+                                <span>📁 Size: ~1.9 MB (Merged)</span>
+                                <span>🔧 Mode: DOUT (Safe Mode)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3c: nyanBOX QIO -->
+                    <div class="firmware-card" data-fw="nyanbox-qio">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <span class="badge badge-nyanbox">nyanBOX QIO</span>
+                            <h3>nyanBOX (QIO Mode)</h3>
+                            <p class="description">Quad SPI flash mode. Designed for official nyanBOX hardware and compatible high-speed flash chips.</p>
+                            <div class="redirect-card-footer" style="padding-top: 0.5rem;">
+                                <a href="https://drive.google.com/drive/u/0/folders/1iStPBdfweuI77CcMu3Bus1OL7F0l-HkU" target="_blank" class="small-redirect-btn" onclick="event.stopPropagation();">
+                                    Custom Drive ↗
+                                </a>
+                            </div>
+                            <div class="specs">
+                                <span>📁 Size: ~1.9 MB (Merged)</span>
+                                <span>🔧 Mode: QIO / 40MHz</span>
                             </div>
                         </div>
                     </div>
@@ -185,11 +223,23 @@
                 path: "firmware/hackbox-main-merged.bin",
                 type: "static"
             },
-            'nyanbox': {
-                name: "nyanBOX Multi-Tool",
-                title: "nyanBOX Multi-Tool (GitHub Live Update)",
-                path: "bootloader, partitions, firmware (raw.githubusercontent.com)",
-                type: "nyanbox"
+            'nyanbox-dio': {
+                name: "nyanBOX (DIO)",
+                title: "nyanBOX Multi-Tool (Merged - DIO Flash Mode)",
+                path: "firmware/NYANBOX_LATEST_MERGED_DIO.bin",
+                type: "static"
+            },
+            'nyanbox-dout': {
+                name: "nyanBOX (DOUT)",
+                title: "nyanBOX Multi-Tool (Merged - DOUT Flash Mode)",
+                path: "firmware/NYANBOX_LATEST_MERGED_DOUT.bin",
+                type: "static"
+            },
+            'nyanbox-qio': {
+                name: "nyanBOX (QIO)",
+                title: "nyanBOX Multi-Tool (Merged - QIO Flash Mode)",
+                path: "firmware/NYANBOX_LATEST_MERGED_QIO.bin",
+                type: "static"
             },
             'bwifikill': {
                 name: "BWifiKill-ESP32",
@@ -257,16 +307,6 @@
                 if (fw.type === "static") {
                     setInstallManifest(fw.name, [{ path: fw.path, offset: 0 }]);
                 } 
-                else if (fw.type === "nyanbox") {
-                    selectedStatus.className = "update-status status-updated";
-                    selectedStatus.textContent = "Successfully configured! Web Flasher will fetch raw bootloader, partitions, and firmware directly from GitHub at flash time.";
-                    
-                    setInstallManifest(fw.name, [
-                        { path: "https://raw.githubusercontent.com/jbohack/nyanBOX/main/firmware-files/bootloader.bin", offset: 4096 },
-                        { path: "https://raw.githubusercontent.com/jbohack/nyanBOX/main/firmware-files/partitions.bin", offset: 32768 },
-                        { path: "https://raw.githubusercontent.com/jbohack/nyanBOX/main/firmware-files/firmware.bin", offset: 65536 }
-                    ]);
-                }
                 else if (fw.type === "bwifikill") {
                     selectedStatus.className = "update-status status-fetching";
                     selectedStatus.textContent = "Checking GitHub for latest BWifiKill build...";
