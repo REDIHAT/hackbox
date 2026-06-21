@@ -391,6 +391,19 @@ footer {
     display: none !important;
 }
 
+.warning-banner {
+    background: rgba(255, 0, 0, 0.12);
+    border: 1px solid var(--border-color);
+    border-left: 5px solid var(--accent-red);
+    border-radius: 12px;
+    padding: 1.25rem;
+    color: #ffffff;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
