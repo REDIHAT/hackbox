@@ -8,7 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <!-- Cache buster added to style.css to force browser update -->
+    <link rel="stylesheet" href="style.css?v=2.0.1">
     <!-- ESP Web Tools component -->
     <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
 </head>
@@ -63,15 +64,15 @@
                         <div class="card-content">
                             <span class="badge badge-nyanbox">nyanBOX</span>
                             <h3>nyanBOX Multi-Tool</h3>
-                            <p class="description">Wireless multi-tool suite. Burn the precompiled build or access the custom Drive to download update bins.</p>
+                            <p class="description">Fetches bootloader, partition table, and firmware directly from nyandevices.com at runtime to ensure you always get the latest update.</p>
                             <div class="redirect-card-footer" style="padding-top: 0.5rem;">
                                 <a href="https://drive.google.com/drive/u/0/folders/1iStPBdfweuI77CcMu3Bus1OL7F0l-HkU" target="_blank" class="small-redirect-btn" onclick="event.stopPropagation();">
                                     Custom Drive ↗
                                 </a>
                             </div>
                             <div class="specs">
-                                <span>📁 Size: 1.91 MB (Merged)</span>
-                                <span>🔧 Chip: ESP32</span>
+                                <span>📁 Size: Dynamic (3-Part)</span>
+                                <span>🔧 Type: Bootloader + Partition + App</span>
                             </div>
                         </div>
                     </div>
@@ -186,9 +187,9 @@
             },
             'nyanbox': {
                 name: "nyanBOX Multi-Tool",
-                title: "nyanBOX Multi-Tool (Custom Drive Version)",
-                path: "firmware/NYANBOX_v4.40.17-MERGED.bin",
-                type: "static"
+                title: "nyanBOX Multi-Tool (Dynamic 3-Part Update)",
+                path: "bootloader, partitions, firmware (nyandevices.com)",
+                type: "nyanbox"
             },
             'bwifikill': {
                 name: "BWifiKill-ESP32",
@@ -243,6 +244,17 @@
                 if (fw.type === "static") {
                     setInstallManifest(fw.name, [{ path: fw.path, offset: 0 }]);
                 } 
+                else if (fw.type === "nyanbox") {
+                    // Flash Bootloader, Partitions, and Firmware dynamically from nyandevices every time
+                    selectedStatus.className = "update-status status-updated";
+                    selectedStatus.textContent = "Configured to dynamically download bootloader, partition table, and nyanBOX firmware at flash-time!";
+                    
+                    setInstallManifest(fw.name, [
+                        { path: "https://nyandevices.com/flasher/bootloader.bin", offset: 4096 },
+                        { path: "https://nyandevices.com/flasher/partitions.bin", offset: 32768 },
+                        { path: "https://nyandevices.com/flasher/firmware.bin", offset: 65536 }
+                    ]);
+                }
                 else if (fw.type === "bwifikill") {
                     selectedStatus.className = "update-status status-fetching";
                     selectedStatus.textContent = "Checking GitHub for latest BWifiKill build...";
