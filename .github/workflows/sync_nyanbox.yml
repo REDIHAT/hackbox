@@ -37,6 +37,18 @@ jobs:
         curl -L -o temp/partitions.bin https://raw.githubusercontent.com/jbohack/nyanBOX/main/firmware-files/partitions.bin
         curl -L -o temp/firmware.bin https://raw.githubusercontent.com/jbohack/nyanBOX/main/firmware-files/firmware.bin
 
+    # 4.5 Download latest BWifiKill binary from pepeangell5/BWifiKill-ESP32-V4.0
+    - name: Download BWifiKill binary
+      run: |
+        mkdir -p firmware
+        BWIFI_URL=$(curl -s https://api.github.com/repos/pepeangell5/BWifiKill-ESP32-V4.0/releases/latest | grep -oP '"browser_download_url": "\K[^"]+\.bin' | head -n 1)
+        if [ ! -z "$BWIFI_URL" ]; then
+          echo "Downloading BWifiKill from $BWIFI_URL"
+          curl -L -o firmware/Bwifikill_MERGED.bin "$BWIFI_URL"
+        else
+          echo "Warning: Could not find BWifiKill release asset URL"
+        fi
+
     # 5. Merge binaries with different SPI Flash Modes
     # Offset offsets: bootloader (0x1000), partitions (0x8000), firmware (0x10000)
     - name: Merge Binaries
@@ -68,5 +80,5 @@ jobs:
     - name: Commit and Push Changes
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
-        commit_message: "Auto-sync: Download and merge latest nyanBOX firmware files"
-        file_pattern: "firmware/NYANBOX_LATEST_MERGED_*.bin"
+        commit_message: "Auto-sync: Download and merge latest nyanBOX and BWifiKill firmware files"
+        file_pattern: "firmware/*.bin"
