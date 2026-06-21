@@ -1,0 +1,72 @@
+name: Sync & Merge nyanBOX Firmware
+
+on:
+  schedule:
+    - cron: '0 */6 * * *' # Runs every 6 hours
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+
+permissions:
+  contents: write # Required to push merged binaries back to the repo
+
+jobs:
+  sync-and-merge:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Checkout this repository
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    # 2. Set up Python
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    # 3. Install esptool
+    - name: Install esptool
+      run: |
+        python -m pip install --upgrade pip
+        pip install esptool
+
+    # 4. Download latest bootloader, partitions, and firmware from jbohack/nyanBOX
+    - name: Download nyanBOX binaries
+      run: |
+        mkdir -p temp
+        curl -L -o temp/bootloader.bin https://raw.githubusercontent.com/jbohack/nyanBOX/main/firmware-files/bootloader.bin
+        curl -L -o temp/partitions.bin https://raw.githubusercontent.com/jbohack/nyanBOX/main/firmware-files/partitions.bin
+        curl -L -o temp/firmware.bin https://raw.githubusercontent.com/jbohack/nyanBOX/main/firmware-files/firmware.bin
+
+    # 5. Merge binaries with different SPI Flash Modes
+    # Offset offsets: bootloader (0x1000), partitions (0x8000), firmware (0x10000)
+    - name: Merge Binaries
+      run: |
+        mkdir -p firmware
+        
+        # Merge for DIO Mode (Safe standard)
+        esptool.py --chip esp32 merge_bin -o firmware/NYANBOX_LATEST_MERGED_DIO.bin \
+          --flash_mode dio --flash_size 4MB \
+          0x1000 temp/bootloader.bin \
+          0x8000 temp/partitions.bin \
+          0x10000 temp/firmware.bin
+          
+        # Merge for DOUT Mode (Safest/Highest compatibility)
+        esptool.py --chip esp32 merge_bin -o firmware/NYANBOX_LATEST_MERGED_DOUT.bin \
+          --flash_mode dout --flash_size 4MB \
+          0x1000 temp/bootloader.bin \
+          0x8000 temp/partitions.bin \
+          0x10000 temp/firmware.bin
+
+        # Merge for QIO Mode (Official hardware mode)
+        esptool.py --chip esp32 merge_bin -o firmware/NYANBOX_LATEST_MERGED_QIO.bin \
+          --flash_mode qio --flash_size 4MB \
+          0x1000 temp/bootloader.bin \
+          0x8000 temp/partitions.bin \
+          0x10000 temp/firmware.bin
+
+    # 6. Commit and push the updated binaries back to repo
+    - name: Commit and Push Changes
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: "Auto-sync: Download and merge latest nyanBOX firmware files"
+        file_pattern: "firmware/NYANBOX_LATEST_MERGED_*.bin"
