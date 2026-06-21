@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
     <!-- Cache buster updated to force reload of CSS changes -->
-    <link rel="stylesheet" href="style.css?v=2.0.2">
+    <link rel="stylesheet" href="style.css?v=2.0.3">
     <!-- ESP Web Tools component -->
     <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
 </head>
@@ -202,6 +202,19 @@
         let activeBlobUrl = null;
 
         function setInstallManifest(name, parts) {
+            // Resolve relative paths to absolute URLs relative to the current page's origin.
+            // This is required because resolving relative paths against dynamic Blob URLs (blob:https://...) throws an 'Invalid URL' error.
+            const resolvedParts = parts.map(part => {
+                let path = part.path;
+                if (!path.startsWith('http://') && !path.startsWith('https://')) {
+                    path = new URL(path, window.location.href).href;
+                }
+                return {
+                    path: path,
+                    offset: part.offset
+                };
+            });
+
             const manifest = {
                 name: name,
                 version: "1.0.0",
@@ -209,7 +222,7 @@
                 builds: [
                     {
                         chipFamily: "ESP32",
-                        parts: parts
+                        parts: resolvedParts
                     }
                 ]
             };
@@ -245,7 +258,6 @@
                     setInstallManifest(fw.name, [{ path: fw.path, offset: 0 }]);
                 } 
                 else if (fw.type === "nyanbox") {
-                    // Flash Bootloader, Partitions, and Firmware dynamically from github raw usercontent every time to ensure it works and has no CORS/Cloudflare blocks
                     selectedStatus.className = "update-status status-updated";
                     selectedStatus.textContent = "Successfully configured! Web Flasher will fetch raw bootloader, partitions, and firmware directly from GitHub at flash time.";
                     
