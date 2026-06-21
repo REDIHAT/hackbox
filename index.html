@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hackbox Custom Web Flasher</title>
+    <title>REDIHAT LABS HACKBOX Web Flasher</title>
     <!-- Import Outfit and JetBrains Mono Fonts from Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,9 +17,10 @@
     
     <div class="container">
         <header>
-            <div class="logo">⚡ HACKBOX WIRELESS AUDITING MATRIX</div>
+            <img src="logo.png" alt="REDIHAT LABS Logo" class="header-logo">
+            <div class="logo">⚡ REDIHAT LABS HACKBOX ⚡</div>
             <h1>Hackbox Web Flasher</h1>
-            <p class="subtitle">Quickly program RF-Clown, nRFBox, nyanBOX, BWifiKill, and Hackbox CK42X firmware to your ESP32-based multi-tool directly from the browser.</p>
+            <p class="subtitle">Program RF-Clown, nRFBox, nyanBOX, BWifiKill, and Hackbox CK42X firmware to your ESP32 multi-tool directly from the browser.</p>
         </header>
 
         <main>
@@ -62,10 +63,15 @@
                         <div class="card-content">
                             <span class="badge badge-nyanbox">nyanBOX</span>
                             <h3>nyanBOX Multi-Tool</h3>
-                            <p class="description">Dynamic multi-tool firmware. Connects to Nyandevices manifest at runtime for auto-updating latest release.</p>
+                            <p class="description">Wireless multi-tool suite. Burn the precompiled build or access the custom Drive to download update bins.</p>
+                            <div class="redirect-card-footer" style="padding-top: 0.5rem;">
+                                <a href="https://drive.google.com/drive/u/0/folders/1iStPBdfweuI77CcMu3Bus1OL7F0l-HkU" target="_blank" class="small-redirect-btn" onclick="event.stopPropagation();">
+                                    Custom Drive ↗
+                                </a>
+                            </div>
                             <div class="specs">
-                                <span>📁 Size: Dynamic / 1.91 MB</span>
-                                <span>🔧 Update: Automatic (CORS-fetch)</span>
+                                <span>📁 Size: 1.91 MB (Merged)</span>
+                                <span>🔧 Chip: ESP32</span>
                             </div>
                         </div>
                     </div>
@@ -138,34 +144,10 @@
                     </div>
                 </div>
             </section>
-
-            <!-- Hardware/Pinout Config Section -->
-            <section class="info-section glass">
-                <h2>📌 PINOUT & MODULE SCHEMATICS</h2>
-                <div class="info-grid">
-                    <div>
-                        <h3>Radio / RF Modules</h3>
-                        <ul>
-                            <li><strong>CC1101 GDO0 (TX)</strong>: GPIO 27</li>
-                            <li><strong>CC1101 GDO2 (RX)</strong>: GPIO 27 (Shared/Custom)</li>
-                            <li><strong>NRF24L01+ CE</strong>: GPIO 16</li>
-                            <li><strong>NRF24L01+ CSN</strong>: GPIO 4</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3>GPS & Interfaces</h3>
-                        <ul>
-                            <li><strong>GPS TX</strong>: GPIO 22</li>
-                            <li><strong>GPS RX</strong>: GPIO 21</li>
-                            <li><strong>PN532 NFC SS</strong>: GPIO 17</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
         </main>
 
         <footer>
-            <p>HACKBOX Suite • Configured for ESP32 Multi-Tool Kit</p>
+            <p>REDIHAT LABS HACKBOX • Configured for ESP32 Multi-Tool Kit</p>
             <p class="footer-links">
                 <a href="https://github.com/REDIHAT/hackbox" target="_blank">View Hackbox Repository</a>
             </p>
@@ -204,9 +186,9 @@
             },
             'nyanbox': {
                 name: "nyanBOX Multi-Tool",
-                title: "nyanBOX Multi-Tool (Latest Release)",
+                title: "nyanBOX Multi-Tool (Custom Drive Version)",
                 path: "firmware/NYANBOX_v4.40.17-MERGED.bin",
-                type: "nyanbox"
+                type: "static"
             },
             'bwifikill': {
                 name: "BWifiKill-ESP32",
@@ -260,43 +242,6 @@
 
                 if (fw.type === "static") {
                     setInstallManifest(fw.name, [{ path: fw.path, offset: 0 }]);
-                } 
-                else if (fw.type === "nyanbox") {
-                    selectedStatus.className = "update-status status-fetching";
-                    selectedStatus.textContent = "Checking for latest nyanBOX releases...";
-                    
-                    try {
-                        // Attempt to fetch manifest from official source via CORS proxy
-                        const proxyUrl = "https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=60&url=";
-                        const targetUrl = encodeURIComponent("https://nyandevices.com/flasher/manifest.php");
-                        const res = await fetch(proxyUrl + targetUrl);
-                        if (!res.ok) throw new Error("CORS Proxy request failed");
-                        
-                        const data = await res.json();
-                        // Search for the ESP32 build inside the manifest
-                        const esp32Build = data.builds.find(b => b.chipFamily === "ESP32");
-                        if (esp32Build && esp32Build.parts) {
-                            // Map parts to absolute paths using nyandevices domain if relative
-                            const mappedParts = esp32Build.parts.map(part => {
-                                let path = part.path;
-                                if (!path.startsWith('http')) {
-                                    path = "https://nyandevices.com/flasher/" + path;
-                                }
-                                return { path: path, offset: part.offset };
-                            });
-
-                            setInstallManifest(fw.name, mappedParts);
-                            selectedStatus.className = "update-status status-updated";
-                            selectedStatus.textContent = "Successfully loaded latest dynamic build from nyandevices.com!";
-                        } else {
-                            throw new Error("ESP32 build configuration not found in manifest");
-                        }
-                    } catch (e) {
-                        console.warn("nyanBOX live update fetch failed, using local fallback. Error:", e);
-                        setInstallManifest(fw.name, [{ path: fw.path, offset: 0 }]);
-                        selectedStatus.className = "update-status status-fallback";
-                        selectedStatus.textContent = "Offline or update failed. Loaded precompiled local fallback (v4.40.17).";
-                    }
                 } 
                 else if (fw.type === "bwifikill") {
                     selectedStatus.className = "update-status status-fetching";
