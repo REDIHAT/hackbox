@@ -25,29 +25,6 @@ All binaries listed below are stored inside the **`firmware/`** directory. These
 
 ---
 
-## 📌 Standard PIN Configurations
-
-When connecting external hardware modules to your ESP32 board, use these recommended pinouts:
-
-### 1. RF-Clown / CC1101 Module
-* **SCK**: GPIO 18
-* **MISO**: GPIO 19
-* **MOSI**: GPIO 23
-* **CS (Chip Select)**: GPIO 27
-* **GDO0 (TX)**: GPIO 22
-* **GDO2 (RX)**: GPIO 35 (or shared depending on the specific board variant)
-
-### 2. nRFBox / NRF24L01+ Module
-* **CSN (Chip Select)**: GPIO 4
-* **CE (Chip Enable)**: GPIO 16
-* **IRQ**: GPIO 17
-
-### 3. GPS Module
-* **GPS TX**: GPIO 22
-* **GPS RX**: GPIO 21
-
----
-
 ## 🛠️ Flashing Manually
 
 If you prefer to flash using standard command-line tools instead of the Web Flasher:
