@@ -8,8 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <!-- Cache buster added to style.css to force browser update -->
-    <link rel="stylesheet" href="style.css?v=2.0.1">
+    <!-- Cache buster updated to force reload of CSS changes -->
+    <link rel="stylesheet" href="style.css?v=2.0.2">
     <!-- ESP Web Tools component -->
     <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
 </head>
@@ -64,7 +64,7 @@
                         <div class="card-content">
                             <span class="badge badge-nyanbox">nyanBOX</span>
                             <h3>nyanBOX Multi-Tool</h3>
-                            <p class="description">Fetches bootloader, partition table, and firmware directly from nyandevices.com at runtime to ensure you always get the latest update.</p>
+                            <p class="description">Fetches bootloader, partition table, and firmware dynamically from the official GitHub repository at flash-time to ensure you always get the latest update.</p>
                             <div class="redirect-card-footer" style="padding-top: 0.5rem;">
                                 <a href="https://drive.google.com/drive/u/0/folders/1iStPBdfweuI77CcMu3Bus1OL7F0l-HkU" target="_blank" class="small-redirect-btn" onclick="event.stopPropagation();">
                                     Custom Drive ↗
@@ -187,8 +187,8 @@
             },
             'nyanbox': {
                 name: "nyanBOX Multi-Tool",
-                title: "nyanBOX Multi-Tool (Dynamic 3-Part Update)",
-                path: "bootloader, partitions, firmware (nyandevices.com)",
+                title: "nyanBOX Multi-Tool (GitHub Live Update)",
+                path: "bootloader, partitions, firmware (raw.githubusercontent.com)",
                 type: "nyanbox"
             },
             'bwifikill': {
@@ -245,14 +245,14 @@
                     setInstallManifest(fw.name, [{ path: fw.path, offset: 0 }]);
                 } 
                 else if (fw.type === "nyanbox") {
-                    // Flash Bootloader, Partitions, and Firmware dynamically from nyandevices every time
+                    // Flash Bootloader, Partitions, and Firmware dynamically from github raw usercontent every time to ensure it works and has no CORS/Cloudflare blocks
                     selectedStatus.className = "update-status status-updated";
-                    selectedStatus.textContent = "Configured to dynamically download bootloader, partition table, and nyanBOX firmware at flash-time!";
+                    selectedStatus.textContent = "Successfully configured! Web Flasher will fetch raw bootloader, partitions, and firmware directly from GitHub at flash time.";
                     
                     setInstallManifest(fw.name, [
-                        { path: "https://nyandevices.com/flasher/bootloader.bin", offset: 4096 },
-                        { path: "https://nyandevices.com/flasher/partitions.bin", offset: 32768 },
-                        { path: "https://nyandevices.com/flasher/firmware.bin", offset: 65536 }
+                        { path: "https://raw.githubusercontent.com/jbohack/nyanBOX/main/firmware-files/bootloader.bin", offset: 4096 },
+                        { path: "https://raw.githubusercontent.com/jbohack/nyanBOX/main/firmware-files/partitions.bin", offset: 32768 },
+                        { path: "https://raw.githubusercontent.com/jbohack/nyanBOX/main/firmware-files/firmware.bin", offset: 65536 }
                     ]);
                 }
                 else if (fw.type === "bwifikill") {
