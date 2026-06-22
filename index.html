@@ -9,11 +9,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
     <!-- Cache buster updated to force reload of CSS changes -->
-    <link rel="stylesheet" href="style.css?v=2.0.7">
+    <link rel="stylesheet" href="style.css?v=2.0.8">
     <!-- ESP Web Tools component -->
     <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
 </head>
 <body>
+    <canvas id="matrix-canvas"></canvas>
     <div class="background-glow"></div>
     
     <div class="container">
@@ -267,6 +268,64 @@
                 }
             });
         });
+
+        // Matrix Digital Rain background effect
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$#@%&+-/*<>[]";
+        const charArr = chars.split("");
+        const fontSize = 14;
+        let columns = canvas.width / fontSize;
+        let drops = [];
+
+        function initDrops() {
+            columns = Math.floor(canvas.width / fontSize) + 1;
+            drops = [];
+            for (let x = 0; x < columns; x++) {
+                drops[x] = Math.random() * -100;
+            }
+        }
+        initDrops();
+        window.addEventListener('resize', initDrops);
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.font = fontSize + 'px "JetBrains Mono", monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = charArr[Math.floor(Math.random() * charArr.length)];
+                const x = i * fontSize;
+                const y = drops[i] * fontSize;
+
+                if (Math.random() > 0.98) {
+                    ctx.fillStyle = '#ff9999'; // Bright head
+                } else if (Math.random() > 0.8) {
+                    ctx.fillStyle = '#ff3333'; // Vibrant red
+                } else {
+                    ctx.fillStyle = '#990000'; // Darker trail red
+                }
+
+                ctx.fillText(text, x, y);
+
+                if (y > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 33);
     </script>
 </body>
 </html>
