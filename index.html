@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
     <!-- Cache buster updated to force reload of CSS changes -->
-    <link rel="stylesheet" href="style.css?v=2.0.8">
+    <link rel="stylesheet" href="style.css?v=2.0.9">
     <!-- ESP Web Tools component -->
     <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
 </head>
@@ -37,7 +37,7 @@
                         <div class="card-content">
                             <span class="badge badge-clown">RF-Clown</span>
                             <h3>RF-Clown (v2.0.0)</h3>
-                            <p class="description">Sub-GHz RF transceiver tool. Utilizes the CC1101 module for scanning, playing, and analyzing RF signals.</p>
+                            <p class="description">2.4GHz RF transceiver tool. Utilizes the NRF24 module for scanning, playing, and analyzing RF signals.</p>
                             <div class="specs">
                                 <span>📁 Size: 681 KB (Merged)</span>
                                 <span>🔧 Chip: ESP32</span>
@@ -138,6 +138,28 @@
                                 <span slot="unsupported">Web Serial is unsupported by this browser. Please use Chrome, Edge, or Opera.</span>
                             </esp-web-install-button>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 3: Drivers & Setup -->
+            <section class="driver-section">
+                <h2>3. USB Drivers & Setup</h2>
+                <div class="driver-card glass">
+                    <div class="driver-info">
+                        <h3>⚠️ Connection & Driver Disclaimer</h3>
+                        <p>To successfully program your ESP32 board directly from the browser, your computer needs the correct USB-to-UART bridge drivers installed. Without these drivers, your system will not recognize the COM port of your device.</p>
+                        <p class="warning-text">If your device is not detected when you click "Install Firmware", please download and install the driver corresponding to your board's USB chip below, then restart your browser.</p>
+                    </div>
+                    <div class="driver-links-grid">
+                        <a href="https://www.wch-ic.com/downloads/CH341SER_EXE.html" target="_blank" class="driver-btn">
+                            <span class="btn-title">CH340 / CH341 Driver</span>
+                            <span class="btn-desc">Common for low-cost ESP32 / CYD boards (Windows EXE)</span>
+                        </a>
+                        <a href="https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers" target="_blank" class="driver-btn">
+                            <span class="btn-title">CP210x VCP Drivers</span>
+                            <span class="btn-desc">Common for official NodeMCU & Espressif kits</span>
+                        </a>
                     </div>
                 </div>
             </section>
