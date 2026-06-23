@@ -507,11 +507,7 @@ footer {
     align-items: center;
 }
 
-.driver-btn .btn-title::after {
-    content: " 📥";
-    font-size: 0.85rem;
-    margin-left: 0.25rem;
-}
+
 
 .driver-btn .btn-desc {
     font-size: 0.8rem;
