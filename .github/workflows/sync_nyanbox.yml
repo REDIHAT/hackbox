@@ -51,7 +51,7 @@ jobs:
           curl -L -o firmware/Bwifikill_MERGED.bin "$BWIFI_URL"
           
           # Extract version from URL (e.g. BWifiKill-ESP32-V4.0-full.bin -> V4.0)
-          BWIFI_VERSION=$(echo "$BWIFI_URL" | grep -oP 'BWifiKill-ESP32-\KV[^/-]+' | tr '[:upper:]' '[:lower:]')
+          BWIFI_VERSION=$(echo "$BWIFI_URL" | grep -oP 'BWifiKill-ESP32-\KV[^/-]+' | head -n 1 | tr '[:upper:]' '[:lower:]')
           if [ -z "$BWIFI_VERSION" ]; then
             BWIFI_VERSION="v4.0"
           fi
