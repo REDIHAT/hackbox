@@ -37,17 +37,38 @@ jobs:
         curl -L -o temp/partitions.bin https://raw.githubusercontent.com/jbohack/nyanBOX/main/firmware-files/partitions.bin
         curl -L -o temp/firmware.bin https://raw.githubusercontent.com/jbohack/nyanBOX/main/firmware-files/firmware.bin
 
-    # 4.5 Download latest BWifiKill binary from pepeangell5/BWifiKill-ESP32-V4.0
-    - name: Download BWifiKill binary
+    # 4.5 Download latest BWifiKill binary and retrieve version information
+    - name: Download BWifiKill and Get Versions
       run: |
         mkdir -p firmware
-        BWIFI_URL=$(curl -s https://api.github.com/repos/pepeangell5/BWifiKill-ESP32-V4.0/releases/latest | grep -oP '"browser_download_url": "\K[^"]+\.bin' | head -n 1)
+        
+        # Query latest releases JSON of BWifiKill
+        BWIFI_RELEASE=$(curl -s https://api.github.com/repos/pepeangell5/BWifiKill-ESP32-V4.0/releases/latest)
+        BWIFI_URL=$(echo "$BWIFI_RELEASE" | grep -oP '"browser_download_url": "\K[^"]+\.bin' | head -n 1)
+        
         if [ ! -z "$BWIFI_URL" ]; then
           echo "Downloading BWifiKill from $BWIFI_URL"
           curl -L -o firmware/Bwifikill_MERGED.bin "$BWIFI_URL"
+          
+          # Extract version from URL (e.g. BWifiKill-ESP32-V4.0-full.bin -> V4.0)
+          BWIFI_VERSION=$(echo "$BWIFI_URL" | grep -oP 'BWifiKill-ESP32-\KV[^/-]+' | tr '[:upper:]' '[:lower:]')
+          if [ -z "$BWIFI_VERSION" ]; then
+            BWIFI_VERSION="v4.0"
+          fi
         else
           echo "Warning: Could not find BWifiKill release asset URL"
+          BWIFI_VERSION="v4.0"
         fi
+        
+        # Get nyanBOX version from manifest.json
+        NYANBOX_VERSION=$(curl -s https://raw.githubusercontent.com/jbohack/nyanBOX/main/firmware-files/manifest.json | grep -oP '"version": "\K[^"]+')
+        if [ -z "$NYANBOX_VERSION" ]; then
+          NYANBOX_VERSION="v4.41.17"
+        fi
+        
+        # Save version mappings to versions.json
+        echo "Creating versions.json with nyanbox: $NYANBOX_VERSION, bwifikill: $BWIFI_VERSION"
+        echo "{\"nyanbox\": \"$NYANBOX_VERSION\", \"bwifikill\": \"$BWIFI_VERSION\"}" > firmware/versions.json
 
     # 5. Merge binaries with different SPI Flash Modes
     # Offset offsets: bootloader (0x1000), partitions (0x8000), firmware (0x10000)
@@ -76,9 +97,9 @@ jobs:
           0x8000 temp/partitions.bin \
           0x10000 temp/firmware.bin
 
-    # 6. Commit and push the updated binaries back to repo
+    # 6. Commit and push the updated binaries and versions back to repo
     - name: Commit and Push Changes
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
-        commit_message: "Auto-sync: Download and merge latest nyanBOX and BWifiKill firmware files"
-        file_pattern: "firmware/*.bin"
+        commit_message: "Auto-sync: Download and merge latest nyanBOX and BWifiKill firmware files and versions"
+        file_pattern: "firmware/*.bin firmware/versions.json"
