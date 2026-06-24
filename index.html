@@ -64,7 +64,7 @@
                         <div class="card-glow"></div>
                         <div class="card-content">
                             <span class="badge badge-nyanbox">nyanBOX</span>
-                            <h3>nyanBOX</h3>
+                            <h3>nyanBOX<span class="fw-version" id="nyanbox-version"></span></h3>
                             <p class="description">Multi-tool firmware for ESP32. Auto-synced and merged from the official repository every 6 hours.</p>
                             <div class="specs">
                                 <span>📁 Size: ~1.9 MB (Merged)</span>
@@ -78,7 +78,7 @@
                         <div class="card-glow"></div>
                         <div class="card-content">
                             <span class="badge badge-bwifi">BWifiKill</span>
-                            <h3>BWifiKill-ESP32</h3>
+                            <h3>BWifiKill-ESP32<span class="fw-version" id="bwifikill-version"></span></h3>
                             <p class="description">WiFi security testing tool. Fetches the latest compilation from GitHub Releases dynamically at runtime.</p>
                             <div class="specs">
                                 <span>📁 Size: Dynamic / 1.95 MB</span>
@@ -199,40 +199,45 @@
         // Initial definitions
         const firmwareData = {
             'rf-clown': {
-                name: "RF-Clown (v2.0.0)",
-                title: "RF-Clown Sub-GHz Tool",
+                name: "RF-Clown",
+                title: "RF-Clown Sub-GHz Tool (v2.0.0)",
                 path: "firmware/RFclown_v2.0.0_MERGED.bin",
-                type: "static"
+                type: "static",
+                version: "2.0.0"
             },
             'nrfbox': {
-                name: "nRFBox (v2.7.2)",
-                title: "nRFBox 2.4GHz Tool",
+                name: "nRFBox",
+                title: "nRFBox 2.4GHz Tool (v2.7.2)",
                 path: "firmware/NRFBox_v2.7.2_MERGED.bin",
-                type: "static"
+                type: "static",
+                version: "2.7.2"
             },
             'hackbox-ck42x': {
                 name: "Hackbox CK42X",
-                title: "Hackbox CK42X Main Firmware",
+                title: "Hackbox CK42X Main Firmware (v1.0.0)",
                 path: "firmware/hackbox-main-merged.bin",
-                type: "static"
+                type: "static",
+                version: "1.0.0"
             },
             'nyanbox': {
                 name: "nyanBOX",
                 title: "nyanBOX Multi-Tool (Merged)",
                 path: "firmware/NYANBOX_LATEST_MERGED_DIO.bin",
-                type: "static"
+                type: "static",
+                version: "1.0.0"
             },
             'bwifikill': {
                 name: "BWifiKill-ESP32",
                 title: "BWifiKill-ESP32 (Auto-synced)",
                 path: "firmware/Bwifikill_MERGED.bin",
-                type: "static"
+                type: "static",
+                version: "1.0.0"
             }
         };
 
         let activeBlobUrl = null;
 
-        function setInstallManifest(name, parts) {
+        function setInstallManifest(name, version, parts) {
             // Resolve relative paths to absolute URLs relative to the current page's origin.
             // This is required because resolving relative paths against dynamic Blob URLs (blob:https://...) throws an 'Invalid URL' error.
             const resolvedParts = parts.map(part => {
@@ -248,7 +253,7 @@
 
             const manifest = {
                 name: name,
-                version: "1.0.0",
+                version: version || "1.0.0",
                 new_install_prompt_erase: true,
                 builds: [
                     {
@@ -286,10 +291,36 @@
                 controls.classList.remove('hidden');
 
                 if (fw.type === "static") {
-                    setInstallManifest(fw.name, [{ path: fw.path, offset: 0 }]);
+                    setInstallManifest(fw.name, fw.version || "1.0.0", [{ path: fw.path, offset: 0 }]);
                 }
             });
         });
+
+        // Fetch versions.json if it exists to dynamically sync versions
+        fetch('firmware/versions.json')
+            .then(res => {
+                if (res.ok) return res.json();
+                throw new Error('versions.json not found');
+            })
+            .then(versions => {
+                if (versions.nyanbox) {
+                    const cleanNyanbox = versions.nyanbox.replace(/^v/, '');
+                    const versionBadge = document.getElementById('nyanbox-version');
+                    if (versionBadge) versionBadge.textContent = ` (v${cleanNyanbox})`;
+                    firmwareData['nyanbox'].version = cleanNyanbox;
+                    firmwareData['nyanbox'].title = `nyanBOX Multi-Tool (v${cleanNyanbox})`;
+                }
+                if (versions.bwifikill) {
+                    const cleanBwifikill = versions.bwifikill.replace(/^v/, '');
+                    const versionBadge = document.getElementById('bwifikill-version');
+                    if (versionBadge) versionBadge.textContent = ` (v${cleanBwifikill})`;
+                    firmwareData['bwifikill'].version = cleanBwifikill;
+                    firmwareData['bwifikill'].title = `BWifiKill-ESP32 (v${cleanBwifikill})`;
+                }
+            })
+            .catch(err => {
+                console.warn('Could not load dynamic version numbers:', err);
+            });
 
         // Matrix Digital Rain background effect
         const canvas = document.getElementById('matrix-canvas');
