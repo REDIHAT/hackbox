@@ -516,9 +516,9 @@ footer {
 }
 
 .fw-version {
-    font-size: inherit;
-    font-weight: inherit;
-    color: inherit;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #ffffff;
     margin-left: 0.35rem;
     vertical-align: baseline;
 }
