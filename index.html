@@ -222,13 +222,9 @@
             'nyanbox': {
                 name: "nyanBOX",
                 title: "nyanBOX Multi-Tool",
-                type: "parts",
-                version: "1.0.0",
-                parts: [
-                    { path: "firmware/nyanbox_bootloader.bin", offset: 4096 },
-                    { path: "firmware/nyanbox_partitions.bin", offset: 32768 },
-                    { path: "firmware/nyanbox_firmware.bin", offset: 65536 }
-                ]
+                path: "firmware/nyanbox_merged.bin",
+                type: "static",
+                version: "1.0.0"
             },
             'bwifikill': {
                 name: "BWifiKill-ESP32",
