@@ -247,8 +247,16 @@
             const resolvedParts = parts.map(part => {
                 let path = part.path;
                 if (!path.startsWith('http://') && !path.startsWith('https://')) {
-                    path = new URL(path, window.location.href).href;
+                    let baseHref = window.location.href;
+                    if (!baseHref.endsWith('/') && !baseHref.endsWith('.html')) {
+                        baseHref += '/';
+                    }
+                    path = new URL(path, baseHref).href;
                 }
+                // Add version cache buster to prevent browser from loading cached placeholder files
+                const cacheBuster = version ? `v=${version}` : `t=${Date.now()}`;
+                path = path + (path.includes('?') ? '&' : '?') + cacheBuster;
+                
                 return {
                     path: path,
                     offset: part.offset
