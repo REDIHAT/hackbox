@@ -312,8 +312,8 @@
             });
         });
 
-        // Fetch versions.json if it exists to dynamically sync versions
-        fetch('firmware/versions.json')
+        // Fetch versions.json if it exists to dynamically sync versions with cache buster
+        fetch(`firmware/versions.json?t=${Date.now()}`)
             .then(res => {
                 if (res.ok) return res.json();
                 throw new Error('versions.json not found');
