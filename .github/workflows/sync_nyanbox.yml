@@ -65,6 +65,14 @@ jobs:
           curl -L -o firmware/nyanbox_firmware.bin "https://raw.githubusercontent.com/jbohack/nyanBOX/main/firmware/nyanbox-v4.41.17/nyanbox.bin"
         fi
         
+        # Patch bootloader.bin to DIO flash mode (0x02) at byte offset 2
+        echo "Patching bootloader.bin to DIO flash mode (0x02)..."
+        python3 -c "
+with open('firmware/nyanbox_bootloader.bin', 'rb+') as f:
+    f.seek(2)
+    f.write(b'\x02')
+"
+        
         # Save version mappings to versions.json
         echo "Creating versions.json with nyanbox: $NYANBOX_VERSION, bwifikill: $BWIFI_VERSION"
         echo "{\"nyanbox\": \"$NYANBOX_VERSION\", \"bwifikill\": \"$BWIFI_VERSION\"}" > firmware/versions.json
