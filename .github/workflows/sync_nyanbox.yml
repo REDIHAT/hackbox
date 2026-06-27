@@ -48,26 +48,19 @@ jobs:
           echo "Found nyanBOX version directory: $NYANBOX_DIR"
           NYANBOX_VERSION=$(echo "$NYANBOX_DIR" | sed 's/nyanbox-//')
           
-          # Construct download URLs
-          BOOTLOADER_URL="https://raw.githubusercontent.com/jbohack/nyanBOX/main/firmware/$NYANBOX_DIR/bootloader.bin"
-          PARTITIONS_URL="https://raw.githubusercontent.com/jbohack/nyanBOX/main/firmware/$NYANBOX_DIR/partitions.bin"
+          # Construct download URL
           FIRMWARE_URL="https://raw.githubusercontent.com/jbohack/nyanBOX/main/firmware/$NYANBOX_DIR/nyanbox.bin"
           
-          echo "Downloading nyanBOX separate binary files..."
-          curl -L -o firmware/nyanbox_bootloader.bin "$BOOTLOADER_URL"
-          curl -L -o firmware/nyanbox_partitions.bin "$PARTITIONS_URL"
+          echo "Downloading nyanBOX firmware binary..."
           curl -L -o firmware/nyanbox_firmware.bin "$FIRMWARE_URL"
         else
           echo "Warning: Could not find nyanBOX version directory, using fallbacks"
           NYANBOX_VERSION="v4.41.17"
-          curl -L -o firmware/nyanbox_bootloader.bin "https://raw.githubusercontent.com/jbohack/nyanBOX/main/firmware/nyanbox-v4.41.17/bootloader.bin"
-          curl -L -o firmware/nyanbox_partitions.bin "https://raw.githubusercontent.com/jbohack/nyanBOX/main/firmware/nyanbox-v4.41.17/partitions.bin"
           curl -L -o firmware/nyanbox_firmware.bin "https://raw.githubusercontent.com/jbohack/nyanBOX/main/firmware/nyanbox-v4.41.17/nyanbox.bin"
         fi
         
-        # Patch bootloader.bin and nyanbox_firmware.bin to DIO flash mode (0x02) at byte offset 2
-        echo "Patching bootloader and firmware to DIO flash mode (0x02)..."
-        python3 -c "with open('firmware/nyanbox_bootloader.bin', 'rb+') as f: f.seek(2); f.write(b'\x02')"
+        # Patch nyanbox_firmware.bin to DIO flash mode (0x02) at byte offset 2
+        echo "Patching firmware to DIO flash mode (0x02)..."
         python3 -c "with open('firmware/nyanbox_firmware.bin', 'rb+') as f: f.seek(2); f.write(b'\x02')"
         
         # Save version mappings to versions.json
