@@ -292,7 +292,12 @@
                 // Reset statuses
                 selectedTitle.textContent = fw.title;
                 selectedStatus.className = "update-status";
-                selectedStatus.textContent = "";
+                if (key === "nyanbox") {
+                    selectedStatus.textContent = "Status: Using custom merged binary (Offset 0x0) - stable, no boot button press required.";
+                    selectedStatus.style.color = "#00ff00";
+                } else {
+                    selectedStatus.textContent = "";
+                }
 
                 placeholder.classList.add('hidden');
                 controls.classList.remove('hidden');
