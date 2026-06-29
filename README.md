@@ -16,8 +16,7 @@ All binaries listed below are stored inside the **`firmware/`** directory. These
    * **`RFclown_v2.0.0_MERGED.bin`**: A Sub-GHz RF analysis tool designed to scan, copy, transmit, and experiment with RF frequencies using a CC1101 module.
 2. **nRFBox (v2.7.2)**
    * **`NRFBox_v2.7.2_MERGED.bin`**: A 2.4GHz testing suite designed for NRF24L01+ signal sniffing, packet decoding, and jamming/spoofing exercises.
-3. **nyanBOX (v4.40.17)**
-   * **`NYANBOX_v4.40.17-MERGED.bin`**: A dynamic wireless multi-tool. (The web flasher will fetch newer updates live from the Nyandevices CDN, but uses this file as an offline/fallback).
+   * **`nyanbox_merged.bin`**: A dynamic wireless multi-tool for ESP32 platforms. Pre-merged with bootloader, partition table, and latest firmware for one-step flashing.
 4. **BWifiKill-ESP32**
    * **`Bwifikill_MERGED.bin`**: A WiFi security testing and packet manipulation suite. (The web flasher queries the GitHub Releases API for dynamic version upgrades, falling back to this precompiled package when offline).
 5. **Hackbox CK42X**
