@@ -133,7 +133,7 @@
                             <p class="file-info">Binary Reference: <code id="selected-fw-path">-</code></p>
                         </div>
                         <div class="button-container">
-                            <esp-web-install-button id="install-button">
+                            <esp-web-install-button baud-rate="460800" id="install-button">
                                 <button slot="activate" class="custom-flash-btn">Install Firmware</button>
                                 <span slot="unsupported">Web Serial is unsupported by this browser. Please use Chrome, Edge, or Opera.</span>
                             </esp-web-install-button>
@@ -265,7 +265,7 @@
                 new_install_prompt_erase: false,
                 builds: [
                     {
-                        chipFamily: "ESP32",
+                        chipFamily: "ESP32", baudRate: 460800,
                         parts: resolvedParts
                     }
                 ]
