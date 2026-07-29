@@ -8,21 +8,19 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <!-- Cache buster updated to force reload of CSS changes -->
-    <link rel="stylesheet" href="style.css?v=2.1.3">
+    <link rel="stylesheet" href="style.css?v=2.0.4">
     <!-- ESP Web Tools component -->
     <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
 </head>
 <body>
     <canvas id="matrix-canvas"></canvas>
-    <div class="background-glow"></div>
-    
+
     <div class="container">
         <header>
             <img src="logo.png" alt="REDIHAT LABS Logo" class="header-logo">
-            <div class="logo">REDIHAT LABS HACKBOX</div>
+            <div class="logo">âš¡ REDIHAT LABS HACKBOX âš¡</div>
             <h1>Hackbox Web Flasher</h1>
-            <p class="subtitle">Program RF-Clown, nRFBox, nyanBOX, BWifiKill, and Hackbox CK42X firmware to your ESP32 multi-tool directly from the browser.</p>
+            <p class="subtitle">Program RF-Clown, nRFBox, nyanBOX, BWifiKill, and Hackbox CK42X firmware directly from your browser.</p>
         </header>
 
         <main>
@@ -37,10 +35,10 @@
                         <div class="card-content">
                             <span class="badge badge-clown">RF-Clown</span>
                             <h3>RF-Clown (v2.0.0)</h3>
-                            <p class="description">2.4GHz RF transceiver tool. Utilizes the NRF24 module for scanning, playing, and analyzing RF signals.</p>
+                            <p class="description">Sub-GHz RF transceiver tool. Utilizes the CC1101 module for scanning, playing, and analyzing RF signals.</p>
                             <div class="specs">
-                                <span>📁 Size: 681 KB (Merged)</span>
-                                <span>🔧 Chip: ESP32</span>
+                                <span>ðŸ“ Size: 681 KB (Merged)</span>
+                                <span>ðŸ”§ Chip: ESP32</span>
                             </div>
                         </div>
                     </div>
@@ -53,8 +51,8 @@
                             <h3>nRFBox (v2.7.2)</h3>
                             <p class="description">2.4GHz transceiver suite. Focuses on NRF24L01+ signal sniffing, jamming, and packet testing.</p>
                             <div class="specs">
-                                <span>📁 Size: 1.69 MB (Merged)</span>
-                                <span>🔧 Chip: ESP32</span>
+                                <span>ðŸ“ Size: 1.69 MB (Merged)</span>
+                                <span>ðŸ”§ Chip: ESP32</span>
                             </div>
                         </div>
                     </div>
@@ -65,38 +63,38 @@
                         <div class="card-content">
                             <span class="badge badge-nyanbox">nyanBOX</span>
                             <h3>nyanBOX<span class="fw-version" id="nyanbox-version"></span></h3>
-                            <p class="description">Multi-tool firmware for ESP32. Full 4MB precompiled merged binary suite (DIO Mode).</p>
+                            <p class="description">Full 4MB precompiled merged binary suite (DIO Mode).</p>
                             <div class="specs">
-                                <span>📁 Size: 4 MB (Full Merged)</span>
-                                <span>🔧 Mode: Full Flash (Offset 0x0)</span>
+                                <span>ðŸ“ Size: 4 MB (Full Merged)</span>
+                                <span>ðŸ”§ Mode: Full Flash (Offset 0x0)</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Card 4: BWifiKill -->
-                    <div class="firmware-card" data-fw="bwifikill">
-                        <div class="card-glow"></div>
-                        <div class="card-content">
-                            <span class="badge badge-bwifi">BWifiKill</span>
-                            <h3>BWifiKill-ESP32<span class="fw-version" id="bwifikill-version"></span></h3>
-                            <p class="description">WiFi security testing tool. Fetches the latest compilation from GitHub Releases dynamically at runtime.</p>
-                            <div class="specs">
-                                <span>📁 Size: Dynamic / 1.95 MB</span>
-                                <span>🔧 Update: Automatic (GitHub API)</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 5: Hackbox CK42X -->
+                    <!-- Card 4: Hackbox CK42X -->
                     <div class="firmware-card" data-fw="hackbox-ck42x">
                         <div class="card-glow"></div>
                         <div class="card-content">
                             <span class="badge badge-hackbox">Hackbox CK42X</span>
-                            <h3>Hackbox CK42X</h3>
-                            <p class="description">Custom security suite built for lordbuffcloud's hackbox. Includes precompiled merged binary.</p>
+                            <h3>Hackbox CK42X Main</h3>
+                            <p class="description">Combined multi-tool suite tailored for the Hackbox CK42X custom hardware layout.</p>
                             <div class="specs">
-                                <span>📁 Size: 2.31 MB (Merged)</span>
-                                <span>🔧 Chip: ESP32</span>
+                                <span>ðŸ“ Size: 2.19 MB (Merged)</span>
+                                <span>ðŸ”§ Chip: ESP32</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 5: BWifiKill -->
+                    <div class="firmware-card" data-fw="bwifikill">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <span class="badge badge-bwifikill">BWifiKill</span>
+                            <h3>BWifiKill-ESP32<span class="fw-version" id="bwifikill-version"></span></h3>
+                            <p class="description">WiFi network auditing and deauthentication testing utility compiled for ESP32.</p>
+                            <div class="specs">
+                                <span>ðŸ“ Size: 1.86 MB (Merged)</span>
+                                <span>ðŸ”§ Chip: ESP32</span>
                             </div>
                         </div>
                     </div>
@@ -110,7 +108,7 @@
                             <p class="description">Redirects to the official Nyanbee stock web flashing page to burn nyanbee firmware safely.</p>
                             <div class="redirect-card-footer">
                                 <a href="https://www.ck42x.com/nyanbee/flash-stock" target="_blank" class="small-redirect-btn">
-                                    Open Nyanbee Flasher ↗
+                                    Open Nyanbee Flasher â†—
                                 </a>
                             </div>
                         </div>
@@ -119,7 +117,7 @@
                 </div>
             </section>
 
-            <!-- Step 2: Connect & Flash -->
+            <!-- Step 2: Connect & Flash (Halehound Mechanism Setup) -->
             <section class="flash-section">
                 <h2>2. Program Device</h2>
                 <div class="flash-card glass">
@@ -137,43 +135,22 @@
                                 <button slot="activate" class="custom-flash-btn">Install Firmware</button>
                                 <span slot="unsupported">Web Serial is unsupported by this browser. Please use Chrome, Edge, or Opera.</span>
                             </esp-web-install-button>
+                            <a id="download-bin-btn" class="custom-download-btn" href="#" download>Download .bin File</a>
                         </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Step 3: Drivers & Setup -->
-            <section class="driver-section">
-                <h2>3. USB Drivers & Setup</h2>
-                <div class="driver-card glass">
-                    <div class="driver-info">
-                        <h3>Connection & Driver Disclaimer</h3>
-                        <p>To successfully program your ESP32 board directly from the browser, your computer needs the correct USB-to-UART bridge drivers installed. Without these drivers, your system will not recognize the COM port of your device.</p>
-                        <p class="warning-text">If your device is not detected when you click "Install Firmware", please download and install the driver corresponding to your board's USB chip below, then restart your browser.</p>
-                    </div>
-                    <div class="driver-links-grid">
-                        <a href="https://www.wch-ic.com/downloads/CH341SER_EXE.html" target="_blank" class="driver-btn">
-                            <span class="btn-title">CH340 / CH341 Driver</span>
-                            <span class="btn-desc">Common for low-cost ESP32 / CYD boards (Windows EXE)</span>
-                        </a>
-                        <a href="https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers" target="_blank" class="driver-btn">
-                            <span class="btn-title">CP210x VCP Drivers</span>
-                            <span class="btn-desc">Common for official NodeMCU & Espressif kits</span>
-                        </a>
                     </div>
                 </div>
             </section>
         </main>
 
         <footer>
-            <p>REDIHAT LABS HACKBOX • Configured for ESP32 Multi-Tool Kit</p>
+            <p>REDIHAT LABS HACKBOX â€¢ Configured for ESP32 Multi-Tool Kit</p>
             <p class="footer-links">
                 <a href="https://github.com/REDIHAT/hackbox" target="_blank">View Hackbox Repository</a>
             </p>
         </footer>
     </div>
 
-    <!-- JavaScript logic to handle Manifest generation, caching, and auto-updates -->
+    <!-- JavaScript logic: Exact Halehound Flashing Mechanism -->
     <script>
         // Check for file protocol (running index.html directly from local explorer)
         if (window.location.protocol === 'file:') {
@@ -181,7 +158,7 @@
             const warningBanner = document.createElement('div');
             warningBanner.className = 'warning-banner';
             warningBanner.innerHTML = `
-                <strong>⚠️ Running Locally via File Protocol Detected</strong><br>
+                <strong>âš ï¸ Running Locally via File Protocol Detected</strong><br>
                 Browser security policies block flashing firmware files when opened directly as a local file (file://).<br>
                 Please use the live site: <a href="https://REDIHAT.github.io/hackbox/" target="_blank" style="color: #ff0000; font-weight: 700; text-decoration: underline;">https://REDIHAT.github.io/hackbox/</a> or host it on a local web server (e.g. <code>python -m http.server 8000</code>).
             `;
@@ -195,123 +172,111 @@
         const selectedStatus = document.getElementById('selected-fw-status');
         const selectedPath = document.getElementById('selected-fw-path');
         const installBtn = document.getElementById('install-button');
+        const downloadBtn = document.getElementById('download-bin-btn');
 
-        // Initial definitions
+        // Firmware Data Mapping
         const firmwareData = {
             'rf-clown': {
-                name: "RF-Clown",
-                title: "RF-Clown Sub-GHz Tool (v2.0.0)",
+                name: "RF-Clown (v2.0.0)",
+                title: "RF-Clown Sub-GHz Tool",
                 path: "firmware/RFclown_v2.0.0_MERGED.bin",
-                type: "static",
                 version: "2.0.0"
             },
             'nrfbox': {
-                name: "nRFBox",
-                title: "nRFBox 2.4GHz Tool (v2.7.2)",
+                name: "nRFBox (v2.7.2)",
+                title: "nRFBox 2.4GHz Tool",
                 path: "firmware/NRFBox_v2.7.2_MERGED.bin",
-                type: "static",
                 version: "2.7.2"
             },
             'hackbox-ck42x': {
                 name: "Hackbox CK42X",
-                title: "Hackbox CK42X Main Firmware (v1.0.0)",
+                title: "Hackbox CK42X Main Firmware",
                 path: "firmware/hackbox-main-merged.bin",
-                type: "static",
                 version: "1.0.0"
             },
             'nyanbox': {
-                name: "nyanBOX",
-                title: "nyanBOX Multi-Tool",
+                name: "nyanBOX Multi-Tool",
+                title: "nyanBOX Multi-Tool (Full 4MB Merged)",
                 path: "firmware/nyanbox_merged.bin",
-                type: "static",
-                version: "4.41.17"
+                version: "4.49.18"
             },
             'bwifikill': {
                 name: "BWifiKill-ESP32",
-                title: "BWifiKill-ESP32 (Auto-synced)",
+                title: "BWifiKill-ESP32",
                 path: "firmware/Bwifikill_MERGED.bin",
-                type: "static",
                 version: "1.0.0"
             }
         };
 
+        // Active blob URL to revoke later
         let activeBlobUrl = null;
 
-        function setInstallManifest(name, version, parts) {
-            // Resolve relative paths to absolute URLs relative to the current page's origin.
-            const resolvedParts = parts.map(part => {
-                let path = part.path;
-                if (!path.startsWith('http://') && !path.startsWith('https://')) {
-                    let baseHref = window.location.href;
-                    if (!baseHref.endsWith('/') && !baseHref.endsWith('.html')) {
-                        baseHref += '/';
-                    }
-                    path = new URL(path, baseHref).href;
-                }
-                const cacheBuster = version ? `v=${version}` : `t=${Date.now()}`;
-                path = path + (path.includes('?') ? '&' : '?') + cacheBuster;
-                
-                return {
-                    path: path,
-                    offset: part.offset
-                };
-            });
-
-            const manifest = {
-                name: name,
-                version: version || "1.0.0",
-                new_install_prompt_erase: true,
-                builds: [
-                    {
-                        chipFamily: "ESP32",
-                        parts: resolvedParts
-                    }
-                ]
-            };
-
-            if (activeBlobUrl) {
-                URL.revokeObjectURL(activeBlobUrl);
-            }
-
-            const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
-            activeBlobUrl = URL.createObjectURL(blob);
-            installBtn.setAttribute('manifest', activeBlobUrl);
-        }
-
         cards.forEach(card => {
-            card.addEventListener('click', async () => {
+            card.addEventListener('click', () => {
+                // Clear active class from all cards
                 cards.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked card
                 card.classList.add('active');
 
-                const key = card.dataset.fw;
-                const fw = firmwareData[key];
-                if (!fw) return;
+                const fwKey = card.dataset.fw;
+                const fw = firmwareData[fwKey];
 
-                // Reset statuses
-                selectedTitle.textContent = fw.title;
-                selectedStatus.className = "update-status";
-                if (key === "nyanbox") {
-                    selectedStatus.textContent = "Status: Using custom merged binary (Offset 0x0) - stable, no boot button press required.";
-                    selectedStatus.style.color = "#00ff00";
-                } else {
-                    selectedStatus.textContent = "Status: Merged binary (Offset 0x0) - no boot button press required.";
-                    selectedStatus.style.color = "#00ff00";
-                }
-
-                placeholder.classList.add('hidden');
-                controls.classList.remove('hidden');
-
-                if (fw.type === "static") {
+                if (fw) {
+                    // Update descriptions
+                    selectedTitle.textContent = fw.title;
                     selectedPath.textContent = fw.path;
-                    setInstallManifest(fw.name, fw.version || "1.0.0", [{ path: fw.path, offset: 0 }]);
-                } else if (fw.type === "parts") {
-                    selectedPath.textContent = fw.parts.map(p => p.path.split('/').pop()).join(', ');
-                    setInstallManifest(fw.name, fw.version || "1.0.0", fw.parts);
+                    selectedStatus.textContent = "";
+
+                    // Resolve relative paths to absolute URLs relative to the current page's origin.
+                    let resolvedPath = fw.path;
+                    if (!resolvedPath.startsWith('http://') && !resolvedPath.startsWith('https://')) {
+                        resolvedPath = new URL(fw.path, window.location.href).href;
+                    }
+
+                    // Add cache buster query parameter
+                    const cacheBuster = fw.version ? `v=${fw.version}` : `t=${Date.now()}`;
+                    const finalPath = resolvedPath + (resolvedPath.includes('?') ? '&' : '?') + cacheBuster;
+
+                    // Set download button properties
+                    downloadBtn.href = finalPath;
+                    downloadBtn.download = fw.path.split('/').pop();
+
+                    // Generate manifest dynamically (Halehound Mechanism)
+                    const manifest = {
+                        name: fw.name,
+                        version: fw.version || "1.0.0",
+                        new_install_prompt_erase: true,
+                        builds: [
+                            {
+                                chipFamily: "ESP32",
+                                parts: [
+                                    { path: finalPath, offset: 0 }
+                                ]
+                            }
+                        ]
+                    };
+
+                    // Revoke previous blob URL if exists
+                    if (activeBlobUrl) {
+                        URL.revokeObjectURL(activeBlobUrl);
+                    }
+
+                    // Create Blob URL for manifest
+                    const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+                    activeBlobUrl = URL.createObjectURL(blob);
+
+                    // Assign to ESP Web Tools button
+                    installBtn.setAttribute('manifest', activeBlobUrl);
+
+                    // Show controls
+                    placeholder.classList.add('hidden');
+                    controls.classList.remove('hidden');
                 }
             });
         });
 
-        // Fetch versions.json if it exists to dynamically sync versions with cache buster
+        // Fetch versions.json if it exists to dynamically sync versions
         fetch(`firmware/versions.json?t=${Date.now()}`)
             .then(res => {
                 if (res.ok) return res.json();
@@ -323,14 +288,12 @@
                     const versionBadge = document.getElementById('nyanbox-version');
                     if (versionBadge) versionBadge.textContent = ` (v${cleanNyanbox})`;
                     firmwareData['nyanbox'].version = cleanNyanbox;
-                    firmwareData['nyanbox'].title = `nyanBOX Multi-Tool (v${cleanNyanbox})`;
                 }
                 if (versions.bwifikill) {
                     const cleanBwifikill = versions.bwifikill.replace(/^v/, '');
                     const versionBadge = document.getElementById('bwifikill-version');
                     if (versionBadge) versionBadge.textContent = ` (v${cleanBwifikill})`;
                     firmwareData['bwifikill'].version = cleanBwifikill;
-                    firmwareData['bwifikill'].title = `BWifiKill-ESP32 (v${cleanBwifikill})`;
                 }
             })
             .catch(err => {
@@ -376,11 +339,11 @@
                 const y = drops[i] * fontSize;
 
                 if (Math.random() > 0.98) {
-                    ctx.fillStyle = '#ff9999'; // Bright head
+                    ctx.fillStyle = '#ff9999';
                 } else if (Math.random() > 0.8) {
-                    ctx.fillStyle = '#ff3333'; // Vibrant red
+                    ctx.fillStyle = '#ff3333';
                 } else {
-                    ctx.fillStyle = '#990000'; // Darker trail red
+                    ctx.fillStyle = '#990000';
                 }
 
                 ctx.fillText(text, x, y);
